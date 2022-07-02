@@ -41,5 +41,9 @@ export default class SimpleEngine {
       entities[i].update(this.deltaTime)
       entities[i].draw(ctx)
     }
+    
+    for(let i=0 ; i < entities.length ; i++) {
+      entities[i].drawDebug(ctx)
+    }
   }
 }
