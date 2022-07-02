@@ -49,14 +49,17 @@ export default class Entity {
   }
 
   debugDrawDirection(ctx) {
-    ctx.strokeStyle = 'rgba(255, 255, 255, 1)'
+    ctx.strokeStyle = 'pink'
     ctx.beginPath()
     ctx.moveTo(this.position.x, this.position.y)
     ctx.lineTo(this.position.x, this.position.y - this.height/2)
     ctx.stroke()
     ctx.closePath()
+  }
 
-    ctx.setTransform(1,0,0,1,0,0)
+  debugDrawCenter(ctx) {
+    ctx.fillStyle = 'pink'
+    ctx.fillRect(this.position.x - 3, this.position.y - 3, 6, 6)
   }
 
   toString() {

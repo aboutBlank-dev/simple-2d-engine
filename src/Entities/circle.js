@@ -15,5 +15,7 @@ export default class Circle extends Entity {
     ctx.fillStyle = this.fillStyle;
     ctx.fill();
     ctx.closePath();
+
+    this.debugDrawCenter(ctx);
   }
 }

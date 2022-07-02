@@ -22,6 +22,7 @@ export default class Polygon extends Entity {
     ctx.closePath()
 
     this.debugDrawVerts(ctx)
+    this.debugDrawCenter(ctx)
     this.debugDrawDirection(ctx)
   }
 
@@ -65,7 +66,5 @@ export default class Polygon extends Entity {
     for(let i=0; i < this.verts.length; i++) {
       ctx.fillRect(this.verts[i].x - 3, this.verts[i].y - 3, 6, 6);
     }
-    
-    ctx.fillRect(this.position.x - 3, this.position.y - 3, 6, 6);
   }
 }
