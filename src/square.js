@@ -1,7 +1,7 @@
-import Entity from './entity.js'
 import {Vector2} from './helper-classes.js'
+import Polygon from './polygon.js';
 
-export default class Square extends Entity {
+export default class Square extends Polygon {
   width = 0
   height = 0
 

@@ -43,8 +43,6 @@ export default class SimpleEngine {
   
     for(let i=0 ; i < entities.length ; i++) {
       entities[i].draw(ctx)
-      ctx.setTransform(1,0,0,1,0,0)
-  
       entities[i].debugDrawVerts(ctx)
       entities[i].debugDrawDirection(ctx)
     }
