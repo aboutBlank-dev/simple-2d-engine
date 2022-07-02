@@ -1,11 +1,11 @@
-import {Vector2} from './helper-classes.js'
+import {Vector2} from '../helper-classes.js'
 import Polygon from './polygon.js';
 
 export default class Square extends Polygon {
   width = 0
   height = 0
 
-  constructor(x, y, width, height, color) {
+  constructor(x, y, width, height, color = 'black') {
     super(color, x, y);
 
     this.width = width

@@ -1,4 +1,4 @@
-import Entity from './entity.js'
+import Entity from './entity'
 export default class Polygon extends Entity {
   verts = []
 
@@ -20,6 +20,9 @@ export default class Polygon extends Entity {
     ctx.fillStyle = this.fillStyle
     ctx.fill()
     ctx.closePath()
+
+    this.debugDrawVerts(ctx)
+    this.debugDrawDirection(ctx)
   }
 
   setPosition(x, y) {
