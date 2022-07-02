@@ -20,7 +20,7 @@ export default class Entity {
 
   physicsUpdate(deltaTime) {
     this.position.x += this.velocity.x * deltaTime;
-    this.position.y += this.velocity.y * deltaTime;
+    this.position.y -= this.velocity.y * deltaTime;
 
     this.rotation += this.angularVelocity * deltaTime
   }
