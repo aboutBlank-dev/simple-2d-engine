@@ -30,12 +30,19 @@ class Entity {
     ]
 
     this.setPosition(x, y)
-    this.setRotation(0)
+    this.setRotation(25)
   }
 
-  updatePosition(deltaTime) {
+  physicsUpdate(deltaTime) {
     this.position.x += this.velocity.x * deltaTime;
     this.position.y += this.velocity.y * deltaTime;
+
+    this.center.x = this.position.x + this.width / 2;
+    this.center.y = this.position.y + this.height / 2;
+
+    this.rotation += 10 * deltaTime
+
+    this.updateVerts()
   }
 
   solveCollision(collidees) {
@@ -57,7 +64,7 @@ class Entity {
     this.position.x = x;
     this.position.y = y;
 
-    this.center = new Vector2(this.position.x + this.width/2, this.position.y + this.height/2);
+    this.center = new Vector2(this.position.x + this.width/2, this.position.y + this.height/2); //Squares only
   }
 
   setVelocity(x, y) {
@@ -68,13 +75,23 @@ class Entity {
   setRotation(angle)
   {
     this.rotation = angle
+    this.updateVerts()
+  }
 
+  updateVerts() {
+    this.verts = [
+      new Vector2(this.position.x, this.position.y),
+      new Vector2(this.position.x + this.width, this.position.y),
+      new Vector2(this.position.x + this.width, this.position.y + this.height),
+      new Vector2(this.position.x, this.position.y + this.height)
+    ]
+    
     //Rotate verts 
     //https://math.stackexchange.com/questions/270194/how-to-find-the-vertices-angle-after-rotation
 
     const p = this.center.x;
     const q = this.center.y;
-    
+
     const radians = this.rotation * Math.PI / 180;
     const cos = Math.cos(radians);
     const sin = Math.sin(radians);
@@ -90,11 +107,27 @@ class Entity {
 
   debugDrawVerts(ctx) {
     ctx.fillStyle = 'pink';
-    for(let i=0; i<this.verts.length; i++) {
+    for(let i=0; i < this.verts.length; i++) {
       ctx.fillRect(this.verts[i].x - 3, this.verts[i].y - 3, 6, 6);
     }
     
     ctx.fillRect(this.center.x - 3, this.center.y - 3, 6, 6);
+  }
+
+  debugDrawDirection(ctx) {
+    ctx.strokeStyle = 'rgba(255, 255, 255, 1)'
+    ctx.beginPath()
+    ctx.moveTo(this.center.x, this.center.y)
+
+    ctx.translate(this.center.x, this.center.y);
+    ctx.rotate(Math.PI / 180 * this.rotation);
+    ctx.translate(-this.center.x, -this.center.y);
+    ctx.lineTo(this.center.x, this.center.y - this.height/2)
+
+    ctx.stroke()
+    ctx.closePath()
+
+    ctx.setTransform(1,0,0,1,0,0)
   }
 
   toString() {

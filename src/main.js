@@ -27,13 +27,16 @@ const frameStep = () => {
   for(let i=0 ; i<entities.length ; i++) {
     entities[i].draw(ctx)
     ctx.setTransform(1,0,0,1,0,0)
+
+
     entities[i].debugDrawVerts(ctx)
+    entities[i].debugDrawDirection(ctx)
   }
 }
 
 const physicsStep = (deltaTime) => {
   for(let i=0 ; i < entities.length ; i++) {
-    entities[i].updatePosition(deltaTime, entities)
+    entities[i].physicsUpdate(deltaTime, entities)
   }
 
   const collisions = {}
@@ -70,7 +73,7 @@ entities.push(new Square(300, 300, 200, 200, 'red'))
 // entities.push(new Square(0, 300, 200, 200, 'purple'))
 
 
-// entities[0].setVelocity(50, 50)
+entities[0].setVelocity(10, 0)
 // entities[1].setVelocity(-50, -50)
 // entities[2].setVelocity(-50, 50)
 
