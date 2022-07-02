@@ -1,46 +1,31 @@
 'use strict'
-export class Vector2 {
-  constructor(x= 0, y = 0) {
-    this.x = x;
-    this.y = y;
-  }
-}
+import {Vector2} from './helper-classes.js'
 
-class Entity {
+export default class Entity {
+  fillStyle = 'black'
+
   verts = []
-  center = new Vector2()
-
-  velocity = new Vector2()
-  position = new Vector2()
-  rotation = 0
-
   collisions = []
 
-  constructor(id, x, y, width, height) {
+  position = new Vector2()
+  velocity = new Vector2()
+
+  rotation = 0
+  angularVelocity = 0
+
+  constructor(id, x = 0, y = 0, rot = 0) {
     this.id = id;
 
-    this.width = width;
-    this.height = height;
-
-    this.verts = [
-      new Vector2(x, y),
-      new Vector2(x + width, y),
-      new Vector2(x + width, y + height),
-      new Vector2(x, y + height)
-    ]
-
-    this.setPosition(x, y)
-    this.setRotation(25)
+    this.position.x = x;
+    this.position.y = y;
+    this.rotation = rot;
   }
 
   physicsUpdate(deltaTime) {
     this.position.x += this.velocity.x * deltaTime;
     this.position.y += this.velocity.y * deltaTime;
 
-    this.center.x = this.position.x + this.width / 2;
-    this.center.y = this.position.y + this.height / 2;
-
-    this.rotation += 10 * deltaTime
+    this.rotation += this.angularVelocity * deltaTime
 
     this.updateVerts()
   }
@@ -58,13 +43,33 @@ class Entity {
 
   update(deltaTime) { }
   
-  draw(ctx) { }
+  draw(ctx) {  
+    if(this.verts.length < 3) return
+    //Draw concave polygon
+    ctx.beginPath()
+    ctx.moveTo(this.verts[0].x, this.verts[0].y)
+
+    for(let i = 1; i < this.verts.length; i++) {
+      ctx.lineTo(this.verts[i].x, this.verts[i].y)
+    }
+
+    ctx.fillStyle = this.fillStyle
+    ctx.fill()
+    ctx.closePath()
+  }
 
   setPosition(x, y) {
-    this.position.x = x;
-    this.position.y = y;
+    this.position.x = x
+    this.position.y = y
 
-    this.center = new Vector2(this.position.x + this.width/2, this.position.y + this.height/2); //Squares only
+    this.updateVertPosition()
+  }
+
+  setRotation(angle)
+  {
+    this.rotation = angle
+
+    this.updateVertRotation()
   }
 
   setVelocity(x, y) {
@@ -72,25 +77,21 @@ class Entity {
     this.velocity.y = y
   }
 
-  setRotation(angle)
-  {
-    this.rotation = angle
-    this.updateVerts()
+  setAngularVelocity(angularVelocity) {
+    this.angularVelocity = angularVelocity
   }
 
   updateVerts() {
-    this.verts = [
-      new Vector2(this.position.x, this.position.y),
-      new Vector2(this.position.x + this.width, this.position.y),
-      new Vector2(this.position.x + this.width, this.position.y + this.height),
-      new Vector2(this.position.x, this.position.y + this.height)
-    ]
-    
-    //Rotate verts 
-    //https://math.stackexchange.com/questions/270194/how-to-find-the-vertices-angle-after-rotation
+    this.updateVertPosition()
+    this.updateVertRotation()
+  }
 
-    const p = this.center.x;
-    const q = this.center.y;
+  updateVertPosition() { }
+
+  //https://math.stackexchange.com/questions/270194/how-to-find-the-vertices-angle-after-rotation
+  updateVertRotation() {
+    const p = this.position.x;
+    const q = this.position.y;
 
     const radians = this.rotation * Math.PI / 180;
     const cos = Math.cos(radians);
@@ -111,18 +112,19 @@ class Entity {
       ctx.fillRect(this.verts[i].x - 3, this.verts[i].y - 3, 6, 6);
     }
     
-    ctx.fillRect(this.center.x - 3, this.center.y - 3, 6, 6);
+    ctx.fillRect(this.position.x - 3, this.position.y - 3, 6, 6);
   }
 
   debugDrawDirection(ctx) {
     ctx.strokeStyle = 'rgba(255, 255, 255, 1)'
     ctx.beginPath()
-    ctx.moveTo(this.center.x, this.center.y)
+    ctx.moveTo(this.position.x, this.position.y)
 
-    ctx.translate(this.center.x, this.center.y);
+    ctx.translate(this.position.x, this.position.y);
     ctx.rotate(Math.PI / 180 * this.rotation);
-    ctx.translate(-this.center.x, -this.center.y);
-    ctx.lineTo(this.center.x, this.center.y - this.height/2)
+    ctx.translate(-this.position.x, -this.position.y);
+    
+    ctx.lineTo(this.position.x, this.position.y - this.height/2)
 
     ctx.stroke()
     ctx.closePath()
@@ -132,21 +134,5 @@ class Entity {
 
   toString() {
     return `Entity(${this.id})`
-  }
-}
-
-export class Square extends Entity {
-  constructor(x, y, width, height, color) {
-    super(color, x, y, width, height); //the id is the "color" atm
-    this.color = color;
-  }
-
-  draw(ctx) {
-    ctx.translate(this.center.x, this.center.y);
-    ctx.rotate(Math.PI / 180 * this.rotation);
-    ctx.translate(-this.center.x, -this.center.y);
-    
-    ctx.fillStyle = this.collisions.length > 0 ? 'green' : this.color;
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 }
