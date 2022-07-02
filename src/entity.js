@@ -7,11 +7,12 @@ export class Vector2 {
 }
 
 class Entity {
+  verts = []
   center = new Vector2()
 
   velocity = new Vector2()
   position = new Vector2()
-  rotation = 45
+  rotation = 0
 
   collisions = []
 
@@ -20,7 +21,16 @@ class Entity {
 
     this.width = width;
     this.height = height;
+
+    this.verts = [
+      new Vector2(x, y),
+      new Vector2(x + width, y),
+      new Vector2(x + width, y + height),
+      new Vector2(x, y + height)
+    ]
+
     this.setPosition(x, y)
+    this.setRotation(0)
   }
 
   updatePosition(deltaTime) {
@@ -51,8 +61,40 @@ class Entity {
   }
 
   setVelocity(x, y) {
-    this.velocity.x = x;
-    this.velocity.y = y;
+    this.velocity.x = x
+    this.velocity.y = y
+  }
+
+  setRotation(angle)
+  {
+    this.rotation = angle
+
+    //Rotate verts 
+    //https://math.stackexchange.com/questions/270194/how-to-find-the-vertices-angle-after-rotation
+
+    const p = this.center.x;
+    const q = this.center.y;
+    
+    const radians = this.rotation * Math.PI / 180;
+    const cos = Math.cos(radians);
+    const sin = Math.sin(radians);
+
+    for(let i = 0; i < this.verts.length; i++) {
+      const x = this.verts[i].x;
+      const y = this.verts[i].y;
+
+      this.verts[i].x = (x - p) * cos - (y - q) * sin + p;
+      this.verts[i].y = (x - p) * sin + (y - q) * cos + q;
+    }
+  }
+
+  debugDrawVerts(ctx) {
+    ctx.fillStyle = 'pink';
+    for(let i=0; i<this.verts.length; i++) {
+      ctx.fillRect(this.verts[i].x - 3, this.verts[i].y - 3, 6, 6);
+    }
+    
+    ctx.fillRect(this.center.x - 3, this.center.y - 3, 6, 6);
   }
 
   toString() {

@@ -27,6 +27,7 @@ const frameStep = () => {
   for(let i=0 ; i<entities.length ; i++) {
     entities[i].draw(ctx)
     ctx.setTransform(1,0,0,1,0,0)
+    entities[i].debugDrawVerts(ctx)
   }
 }
 
@@ -64,9 +65,9 @@ const hasCollision = (entityA, entityB) => {
 const entities = []
 
 
-entities.push(new Square(300, 50, 200, 200, 'red'))
-entities.push(new Square(600, 50, 200, 200, 'blue'))
-entities.push(new Square(0, 50, 200, 200, 'purple'))
+entities.push(new Square(300, 300, 200, 200, 'red'))
+// entities.push(new Square(600, 300, 200, 200, 'blue'))
+// entities.push(new Square(0, 300, 200, 200, 'purple'))
 
 
 // entities[0].setVelocity(50, 50)
