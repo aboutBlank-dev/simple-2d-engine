@@ -29,6 +29,10 @@ export default class Entity {
   
   draw(ctx) {  }
 
+  drawDebug(ctx) {
+    this.debugDrawCenter(ctx)
+  }
+
   setPosition(x, y) {
     this.position.x = x
     this.position.y = y
@@ -39,22 +43,13 @@ export default class Entity {
     this.rotation = angle
   }
 
-  setVelocity(x, y) {
-    this.velocity.x = x
-    this.velocity.y = y
+
+  setVelocity(velocity) {
+    this.velocity = velocity;
   }
 
   setAngularVelocity(angularVelocity) {
     this.angularVelocity = angularVelocity
-  }
-
-  debugDrawDirection(ctx) {
-    ctx.strokeStyle = 'pink'
-    ctx.beginPath()
-    ctx.moveTo(this.position.x, this.position.y)
-    ctx.lineTo(this.position.x, this.position.y - this.height/2)
-    ctx.stroke()
-    ctx.closePath()
   }
 
   debugDrawCenter(ctx) {

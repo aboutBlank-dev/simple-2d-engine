@@ -20,10 +20,11 @@ export default class Polygon extends Entity {
     ctx.fillStyle = this.fillStyle
     ctx.fill()
     ctx.closePath()
+  }
 
+  drawDebug(ctx) {
     this.debugDrawVerts(ctx)
     this.debugDrawCenter(ctx)
-    this.debugDrawDirection(ctx)
   }
 
   setPosition(x, y) {
