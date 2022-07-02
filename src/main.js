@@ -26,6 +26,7 @@ const frameStep = () => {
 
   for(let i=0 ; i<entities.length ; i++) {
     entities[i].draw(ctx)
+    ctx.setTransform(1,0,0,1,0,0)
   }
 }
 
@@ -48,13 +49,12 @@ const physicsStep = (deltaTime) => {
     }  
   }
   
-  console.log(collisions)
   for(let i=0 ; i < entities.length; i++) {
     entities[i].solveCollision(collisions[entities[i]])
   }
 }
 
-//For Squares only at the moment
+//For Un-rotated Squares only at the moment
 const hasCollision = (entityA, entityB) => {
   return entityA.position.x < entityB.position.x + entityB.width &&
     entityA.position.x + entityA.width > entityB.position.x &&
@@ -64,13 +64,13 @@ const hasCollision = (entityA, entityB) => {
 const entities = []
 
 
-entities.push(new Square(0, 50, 100, 100, 'red'))
-entities.push(new Square(300, 300, 100, 100, 'blue'))
-entities.push(new Square(300, 100, 100, 100, 'purple'))
+entities.push(new Square(300, 50, 200, 200, 'red'))
+entities.push(new Square(600, 50, 200, 200, 'blue'))
+entities.push(new Square(0, 50, 200, 200, 'purple'))
 
 
-entities[0].setVelocity(50, 50)
-entities[1].setVelocity(-50, -50)
-entities[2].setVelocity(-50, 50)
+// entities[0].setVelocity(50, 50)
+// entities[1].setVelocity(-50, -50)
+// entities[2].setVelocity(-50, 50)
 
 requestAnimationFrame(update)

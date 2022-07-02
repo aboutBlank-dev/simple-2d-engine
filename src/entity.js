@@ -7,18 +7,20 @@ export class Vector2 {
 }
 
 class Entity {
+  center = new Vector2()
+
   velocity = new Vector2()
   position = new Vector2()
+  rotation = 45
 
   collisions = []
 
   constructor(id, x, y, width, height) {
     this.id = id;
 
-    this.position.x = x;
-    this.position.y = y;
     this.width = width;
     this.height = height;
+    this.setPosition(x, y)
   }
 
   updatePosition(deltaTime) {
@@ -42,8 +44,10 @@ class Entity {
   draw(ctx) { }
 
   setPosition(x, y) {
-    this.x = x;
-    this.y = y;
+    this.position.x = x;
+    this.position.y = y;
+
+    this.center = new Vector2(this.position.x + this.width/2, this.position.y + this.height/2);
   }
 
   setVelocity(x, y) {
@@ -52,7 +56,7 @@ class Entity {
   }
 
   toString() {
-    return `Entity: ${this.id}`
+    return `Entity(${this.id})`
   }
 }
 
@@ -62,7 +66,11 @@ export class Square extends Entity {
     this.color = color;
   }
 
-  draw(ctx) { 
+  draw(ctx) {
+    ctx.translate(this.center.x, this.center.y);
+    ctx.rotate(Math.PI / 180 * this.rotation);
+    ctx.translate(-this.center.x, -this.center.y);
+    
     ctx.fillStyle = this.collisions.length > 0 ? 'green' : this.color;
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
