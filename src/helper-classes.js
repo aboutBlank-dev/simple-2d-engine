@@ -8,6 +8,10 @@ export class Vector2 {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
+  add(vector) {
+    return new Vector2(this.x + vector.x, this.y + vector.y);
+  }
+
   divide(n) {
     if(n == 0) return new Vector2(0, 0);
 
@@ -20,5 +24,9 @@ export class Vector2 {
   
   normalize() {
     return this.divide(this.magnitude());
+  }
+
+  copy() {
+    return new Vector2(this.x, this.y);
   }
 }

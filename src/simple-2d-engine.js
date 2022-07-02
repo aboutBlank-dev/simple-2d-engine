@@ -26,6 +26,7 @@ export default class SimpleEngine {
     const entities = this.entities
     for(let i=0 ; i < entities.length ; i++) {
       this.entities[i].physicsUpdate(this.deltaTime, entities)
+      this.entities[i].postPhysicsUpdate()
     }
 
     //Collisions here ?

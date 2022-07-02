@@ -5,17 +5,27 @@ export default class Circle extends Entity {
 
   constructor(x, y, radius, color = 'black') {
     super(color, x, y);
+
     this.radius = radius;
     this.fillStyle = color;
   }
 
   draw(ctx) {
     ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+    ctx.arc(this.position.x + this.radius, this.position.y + this.radius, this.radius, 0, 2 * Math.PI);
     ctx.fillStyle = this.fillStyle;
     ctx.fill();
     ctx.closePath();
+  }
 
-    this.debugDrawCenter(ctx);
+  updateCenter() {
+    this.center.x = this.position.x + this.radius;
+    this.center.y = this.position.y + this.radius;
+
+    console.log(this.center)
+  }
+
+  drawDebug(ctx) {
+    this.debugDrawCenter(ctx, this.center);  
   }
 }

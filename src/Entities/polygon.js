@@ -1,10 +1,11 @@
+import { Vector2 } from '../helper-classes'
 import Entity from './entity'
 export default class Polygon extends Entity {
   verts = []
 
-  physicsUpdate(deltaTime) {
-    super.physicsUpdate(deltaTime)
+  postPhysicsUpdate() {
     this.updateVerts()
+    this.updateCenter()
   }
 
   draw(ctx) {  
@@ -24,16 +25,18 @@ export default class Polygon extends Entity {
 
   drawDebug(ctx) {
     this.debugDrawVerts(ctx)
-    this.debugDrawCenter(ctx)
+    this.debugDrawCenter(ctx, this.center)
   }
 
   setPosition(x, y) {
     super.setPosition(x, y)
+
     this.updateVertPosition()
   }
 
   setRotation(rot) {
     super.setRotation(rot)
+
     this.updateVertRotation()
   }
 
@@ -43,6 +46,19 @@ export default class Polygon extends Entity {
   }
 
   updateVertPosition() { }
+
+  updateCenter() {
+    this.center.x = 0;
+    this.center.y = 0;
+
+    for(let i = 0; i < this.verts.length; i++) {
+      this.center.x += this.verts[i].x;
+      this.center.y += this.verts[i].y;
+    }
+
+    this.center.x /= this.verts.length;
+    this.center.y /= this.verts.length;
+  }
 
   //https://math.stackexchange.com/questions/270194/how-to-find-the-vertices-angle-after-rotation
   updateVertRotation() {

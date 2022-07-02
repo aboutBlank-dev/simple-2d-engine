@@ -13,6 +13,6 @@ export default class MyCircle extends Circle {
   update() {
     let velocity = new Vector2(Input.horizontal, Input.vertical);
     velocity = velocity.normalize();
-    this.setVelocity(velocity.multiply(100));
+    this.setVelocity(velocity.multiply(this.velocityMultiplier));
   }
 }

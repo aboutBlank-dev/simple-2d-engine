@@ -11,23 +11,16 @@ export default class Square extends Polygon {
     this.width = width
     this.height = height
     this.fillStyle = color
-
-    this.verts = [
-      new Vector2(this.position.x - this.width/2, this.position.y + this.height/2),
-      new Vector2(this.position.x + this.width/2, this.position.y + this.height/2),
-      new Vector2(this.position.x + this.width/2, this.position.y - this.height/2),
-      new Vector2(this.position.x - this.width/2, this.position.y - this.height/2)
-    ]
   }
 
   //override
   updateVertPosition() {
     //Make verts representing a square.
     this.verts = [
-      new Vector2(this.position.x - this.width/2, this.position.y + this.height/2),
-      new Vector2(this.position.x + this.width/2, this.position.y + this.height/2),
-      new Vector2(this.position.x + this.width/2, this.position.y - this.height/2),
-      new Vector2(this.position.x - this.width/2, this.position.y - this.height/2)
+      new Vector2(this.position.x, this.position.y),
+      new Vector2(this.position.x + this.width, this.position.y),
+      new Vector2(this.position.x + this.width, this.position.y + this.height),
+      new Vector2(this.position.x, this.position.y + this.height)
     ]
   }
 }

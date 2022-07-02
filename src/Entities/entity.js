@@ -4,6 +4,8 @@ import {Vector2} from '../helper-classes'
 export default class Entity {
   fillStyle = 'black'
 
+  center = new Vector2();
+
   position = new Vector2()
   velocity = new Vector2()
 
@@ -22,7 +24,11 @@ export default class Entity {
     this.position.x += this.velocity.x * deltaTime;
     this.position.y -= this.velocity.y * deltaTime;
 
-    this.rotation += this.angularVelocity * deltaTime
+    this.rotation += this.angularVelocity * deltaTime;
+  }
+
+  postPhysicsUpdate() { 
+    this.updateCenter()
   }
 
   update(deltaTime) { }
@@ -33,16 +39,22 @@ export default class Entity {
     this.debugDrawCenter(ctx)
   }
 
-  setPosition(x, y) {
-    this.position.x = x
-    this.position.y = y
+  setPosition(x, y, aroundCenter = true) {
+    if(aroundCenter === true) {
+      this.position.x = x - (this.center.x - this.position.x);
+      this.position.y = y - (this.center.y - this.position.y);
+    } else {
+      this.position.x = x
+      this.position.y = y
+    }    
   }
+
+  updateCenter() { }
 
   setRotation(angle)
   {
     this.rotation = angle
   }
-
 
   setVelocity(velocity) {
     this.velocity = velocity;
@@ -52,9 +64,11 @@ export default class Entity {
     this.angularVelocity = angularVelocity
   }
 
-  debugDrawCenter(ctx) {
+  debugDrawCenter(ctx, center) {
+    if(!center) center = this.position
+
     ctx.fillStyle = 'pink'
-    ctx.fillRect(this.position.x - 3, this.position.y - 3, 6, 6)
+    ctx.fillRect(center.x - 3, center.y - 3, 6, 6)
   }
 
   toString() {
