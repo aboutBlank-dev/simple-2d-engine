@@ -1,11 +1,10 @@
 'use strict'
 import SimpleEngine from "./simple-2d-engine"
 import Square from "./Entities/square"
-import Circle from "./Entities/circle";
+import MyCircle from "./my-circle";
+import Input from "./input-manger";
 
 const game = new SimpleEngine();
 
 game.entities.push(new Square(100, 100, 50, 50, 'red'))
-game.entities.push(new Circle(300, 100, 50, 'blue'))
-
-game.entities[1].setVelocity(10, 10)
+game.entities.push(new MyCircle(300, 100, 50, 'blue'))
