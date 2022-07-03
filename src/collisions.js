@@ -22,6 +22,9 @@ export default class Collisions {
   }
 
   static intersectPolygons(a, b) {
+    let normal = new Vector2();
+    let depth = Number.MAX_VALUE;
+
     const verticesA = a.verts;
     const verticesB = b.verts;
 
@@ -38,7 +41,13 @@ export default class Collisions {
       const [minB, maxB] = Collisions.projectVertices(verticesB, axis)
 
       if(minA >= maxB || minB >= maxA) {
-        return false;
+        return [false, normal, depth];
+      }
+
+      const axisDepth = Math.min(maxB - minA, maxA - minB);
+      if(axisDepth < depth) {
+        depth = axisDepth;
+        normal = axis;
       }
     }
 
@@ -53,13 +62,68 @@ export default class Collisions {
       const [minB, maxB] = Collisions.projectVertices(verticesB, axis)
 
       if(minA >= maxB || minB >= maxA) {
-        return false;
+        return [false, normal, depth];
+      }
+
+      const axisDepth = Math.min(maxB - minA, maxA - minB);
+      if(axisDepth < depth) {
+        depth = axisDepth;
+        normal = axis;
       }
     }
 
-    return true;
+    depth = depth / normal.magnitude();
+    normal = normal.normalize();
+
+    const centerA = Collisions.findArithmeticMean(verticesA);
+    const centerB = Collisions.findArithmeticMean(verticesB);
+
+    const direction = centerA.subtract(centerB);
+
+    if(direction.dot(normal) > 0) {
+      normal = normal.multiply(-1); 
+    }
+
+    return [true, normal, depth];
   }
 
+  static intersectPolygon_Circle(polygon, circle) {
+    let normal = new Vector2();
+    let depth = Number.MIN_VALUE;
+
+    let collision = false;
+
+    const vertices = polygon.verts;
+    const center = circle.center;
+    
+    for(let i=0; i < vertices.length; i++) {
+      const v = vertices[i];
+      
+      const distance = v.subtract(center).magnitude();
+      if(distance < circle.radius) {
+        collision = true;
+
+        const newDepth = circle.radius - distance;
+        if(newDepth > depth) {
+          depth = newDepth;
+          normal = v.subtract(center).normalize(); //needs fixing
+        }
+      }
+    }
+
+    return [collision, normal, depth];
+  }
+
+  static intersectCircles(a, b) {
+    const dist = a.center.subtract(b.center).magnitude();
+    const collision = dist < a.radius + b.radius;
+
+    const normal = a.center.subtract(b.center).normalize();
+    const depth = (a.radius + b.radius) - dist;
+
+    return [collision, normal, depth]
+  }
+  
   static projectVertices(vertices, axis) {
     let min = Number.MAX_VALUE;
     let max = Number.MIN_VALUE;
@@ -79,24 +143,15 @@ export default class Collisions {
     return [min, max]
   }
 
-  static intersectCircles(a, b) {
-    const dist = a.center.subtract(b.center).magnitude();
-    return dist < a.radius + b.radius;
-  }
+  static findArithmeticMean(vertices) {
+    let sumX = 0;
+    let sumY = 0;
 
-  static intersectPolygon_Circle(polygon, circle) {
-    const vertices = polygon.verts;
-    const center = circle.center;
-    
     for(let i=0; i < vertices.length; i++) {
-      const v = vertices[i];
-      
-      const distance = v.subtract(center).magnitude();
-      if(distance < circle.radius) {
-        return true;
-      }
+      sumX += vertices[i].x;
+      sumY += vertices[i].y;
     }
 
-    return false;
+    return new Vector2(sumX / vertices.length, sumY / vertices.length);
   }
 }

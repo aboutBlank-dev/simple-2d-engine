@@ -49,6 +49,10 @@ export default class Entity {
     }    
   }
 
+  move(moveVector) {
+    this.position = this.position.add(moveVector)
+  }
+
   updateCenter() { }
 
   setRotation(angle)

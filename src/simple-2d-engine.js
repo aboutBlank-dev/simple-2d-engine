@@ -37,8 +37,11 @@ export default class SimpleEngine {
       for(let j = i + 1; j < entities.length; j++) {
         const entityB = entities[j]
         
-        if(Collisions.collision(entityA, entityB)) {
-          console.log("collision")
+        const [collision, normal, depth] = Collisions.collision(entityA, entityB)
+
+        if(collision) {
+          entityA.move(normal.multiply(-depth).divide(2))
+          entityB.move(normal.multiply(depth).divide(2))
         }
       }
     }
