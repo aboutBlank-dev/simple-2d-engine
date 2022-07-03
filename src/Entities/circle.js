@@ -21,8 +21,6 @@ export default class Circle extends Entity {
   updateCenter() {
     this.center.x = this.position.x + this.radius;
     this.center.y = this.position.y + this.radius;
-
-    console.log(this.center)
   }
 
   drawDebug(ctx) {

@@ -1,3 +1,5 @@
+import Collisions from "./collisions"
+import Polygon from "./Entities/polygon"
 export default class SimpleEngine {
   canvas = document.getElementById('game')
   ctx = this.canvas.getContext('2d')
@@ -30,6 +32,17 @@ export default class SimpleEngine {
     }
 
     //Collisions here ?
+    for(let i = 0; i < entities.length; i++) {
+      const entityA = entities[i]
+      for(let j = i + 1; j < entities.length; j++) {
+        const entityB = entities[j]
+        
+        if(Collisions.collision(entityA, entityB)) {
+          console.log("collision")
+        }
+      }
+    }
+
   }
   
   frameStep = () => {
@@ -38,7 +51,7 @@ export default class SimpleEngine {
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
   
-    for(let i=0 ; i < entities.length ; i++) {
+    for(let i=0 ; i < entities.length; i++) {
       entities[i].update(this.deltaTime)
       entities[i].draw(ctx)
     }

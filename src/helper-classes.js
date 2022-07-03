@@ -12,6 +12,10 @@ export class Vector2 {
     return new Vector2(this.x + vector.x, this.y + vector.y);
   }
 
+  subtract(vector) {
+    return new Vector2(this.x - vector.x, this.y - vector.y);
+  }
+
   divide(n) {
     if(n == 0) return new Vector2(0, 0);
 
@@ -22,6 +26,10 @@ export class Vector2 {
     return new Vector2(this.x * n, this.y * n);
   }
   
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y;
+  }
+
   normalize() {
     return this.divide(this.magnitude());
   }
