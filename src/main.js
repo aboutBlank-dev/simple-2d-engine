@@ -8,7 +8,13 @@ import Circle from "./Entities/circle";
 
 const game = new SimpleEngine();
 
-game.entities.push(new Square(70, 200, 50, 50, 'red'))
+game.entities.push(new Square(200, 70, 50, 50, 'red'))
+game.entities.push(new Square(300, 70, 50, 50, 'red'))
+game.entities.push(new Square(400, 70, 50, 50, 'red'))
+game.entities.push(new Square(500, 70, 50, 50, 'red'))
+game.entities.push(new Square(600, 70, 50, 50, 'red'))
+game.entities.push(new Circle(200, 200, 50, 'blue'))
 game.entities.push(new MySquare(0, 0, 50, 'blue'))
-//game.entities.push(new Trapezium(150, 200, 'green'))
-game.entities.push(new Circle(300, 100, 50, 'pink'))
+
+
+

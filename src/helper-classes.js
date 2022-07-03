@@ -30,10 +30,18 @@ export class Vector2 {
     return this.x * vector.x + this.y * vector.y;
   }
 
+  distance(vector) {
+    return this.subtract(vector).magnitude();
+  }
+
   normalize() {
     return this.divide(this.magnitude());
   }
 
+  angle() {
+    return Math.atan2(this.y, this.x);
+  }
+  
   copy() {
     return new Vector2(this.x, this.y);
   }

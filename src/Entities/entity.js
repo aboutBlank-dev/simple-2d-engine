@@ -53,6 +53,10 @@ export default class Entity {
     this.position = this.position.add(moveVector)
   }
 
+  rotate(angle) {
+    this.rotation += angle
+  }
+
   updateCenter() { }
 
   setRotation(angle)
