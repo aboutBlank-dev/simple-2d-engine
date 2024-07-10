@@ -1,5 +1,5 @@
 # simple-2d-engine
-Very Simple 2D engine with entity system which can have circle entities and polygons(shape created using vertices).
+Very Simple 2D engine with entity system which can have circle/polygon entities.
 Collision detection and resolution is implemented using SAT(Separating Axis Theorem).
 
 It is by no means optimized in any way or supposed to be used in any capacity.
